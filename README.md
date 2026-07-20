@@ -6,5 +6,5 @@ No functionality yet.
 
 ### To EXIT:
 ```bash
-shroom > .exit
+.exit
 ```
