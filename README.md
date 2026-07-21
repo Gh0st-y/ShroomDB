@@ -1,8 +1,15 @@
 # ShroomDB
 My own custom build database
 
-## Function
-No functionality yet.
+## Statements
+Staements have no function yet.
+```
+select
+```
+
+```
+insert
+```
 
 ### To EXIT:
 ```bash
