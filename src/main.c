@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h> 
 
-// Struct definitions
+// Struct declarations
 typedef struct
 {
     char* buffer;
@@ -20,6 +20,31 @@ InputBuffer* new_input_buffer()
 
     return input_buffer;
 }
+
+// Statement struct and enum declaration
+typedef enum 
+{
+    STATEMENT_INSERT, 
+    STATEMENT_SELECT
+} StatementType;
+
+typedef struct
+{
+    StatementType type;
+} Statement;
+
+// Enum declarations
+typedef enum
+{
+    META_COMMAND_SUCCESS,
+    META_COMMAND_UNRECOGNIZED_COMMAND
+} MetaCommandResult;
+
+typedef enum
+{
+    PREPARE_SUCCESS,
+    PREPARE_UNRECOGNIZED_STATEMENT
+} PrepareResult;
 
 // Prints a prompt to the user. We do this before reading each line of input.
 void print_prompt() { printf("shroom > "); }
@@ -54,6 +79,50 @@ void close_input_buffer(InputBuffer* input_buffer)
     free(input_buffer);
 }
 
+// A wrapper for existing functionality that leaves room for more commands
+MetaCommandResult do_meta_command(InputBuffer* input_buffer)
+{
+    if (strcmp(input_buffer->buffer, ".exit") == 0)
+    {
+        exit(EXIT_SUCCESS);
+    } else
+    {
+        return META_COMMAND_UNRECOGNIZED_COMMAND;
+    } 
+}
+
+// Does not understand SQL right now. In fact, it only understands two words
+PrepareResult prepare_statement(InputBuffer* input_buffer, Statement* statement)
+{
+    if (strncmp(input_buffer->buffer, "insert", 6) == 0)
+    {
+        statement->type = STATEMENT_INSERT;
+        return PREPARE_SUCCESS;
+    }
+    if (strcmp(input_buffer->buffer, "select") == 0)
+    {
+        statement->type = STATEMENT_SELECT;
+        return PREPARE_SUCCESS;
+    }
+
+    return PREPARE_UNRECOGNIZED_STATEMENT;
+}
+
+// Actually executes the statement, only stubs now because no actual SQL gets inputed
+// and no data yet
+void execute_statement(Statement* statement)
+{
+    switch (statement->type)
+    {
+        case (STATEMENT_INSERT):
+            printf("This is where we would do an insert.\n");
+            break;
+        case (STATEMENT_SELECT):
+            printf("This is where we would do a select.\n");
+            break;
+    }
+}
+
 // Contains an infinite loop that prints the prompt, gets a line of input, then processes that line of input 
 int main(int argc, char* argv[])
 {
@@ -63,13 +132,28 @@ int main(int argc, char* argv[])
         print_prompt();
         read_input(input_buffer);
 
-        if (strcmp(input_buffer->buffer, ".exit") == 0)
+        if (input_buffer->buffer[0] == '.')
         {
-            close_input_buffer(input_buffer);
-            exit(EXIT_SUCCESS);
-        } else 
-        {
-            printf("Unrecognized command '%s'.\n", input_buffer->buffer);
+            switch (do_meta_command(input_buffer))
+            {
+                case (META_COMMAND_SUCCESS):
+                    continue;
+                case (META_COMMAND_UNRECOGNIZED_COMMAND):
+                    printf("Unrecognized command '%s'.\n", input_buffer->buffer);
+                    continue;
+            }
         }
+
+        Statement statement;
+        switch (prepare_statement(input_buffer, &statement))
+        {
+            case (PREPARE_SUCCESS):
+                break;
+            case (PREPARE_UNRECOGNIZED_STATEMENT):
+                printf("Unrecognized keyword at start of '%s'.\n", input_buffer->buffer);
+                continue;
+        }
+
+        execute_statement(&statement);
     }
 }
