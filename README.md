@@ -1,5 +1,5 @@
 # ShroomDB
-My own custom build database. Currently only an in memory, single table database.
+My own custom built database. Currently only an in memory, single table database.
 
 ## Statements
 Select all rows in table
