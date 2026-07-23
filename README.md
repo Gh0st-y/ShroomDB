@@ -1,10 +1,5 @@
 # ShroomDB
- ____  _                               ____  ____     .-"""-.
-/ ___|| |__  _ __ ___   ___  _ __ ___ |  _ \| __ )   /* * * *\
-\___ \| '_ \| '__/ _ \ / _ \| '_   _ \| | | |  _ \  :_.-:`:-._;
- ___) | | | | | | (_) | (_) | | | | | | |_| | |_) |     (_)    
-|____/|_| |_|_|  \___/ \___/|_| |_| |_|____/|____/      (_)
-my own custom built database. Currently only an in memory, single table database.
+My own custom built database. Currently only an in memory, single table database.
 
 ## Table structure
 | ID | Username | Email |
