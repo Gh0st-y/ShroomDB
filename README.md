@@ -1,14 +1,16 @@
 # ShroomDB
-My own custom build database
+My own custom build database. Currently only an in memory, single table database.
 
 ## Statements
-Staements have no function yet.
+Select all rows in table
 ```
 select
 ```
 
+Insert a row into a table
 ```
-insert
+insert <id> <username> <email>
+ex. insert 1 bob bob@example.com
 ```
 
 ### To EXIT:
